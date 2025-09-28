@@ -1,0 +1,84 @@
+import "google/protobuf/timestamp.proto";
+
+edition = "2024";
+
+// Top-level message that is stored in the recording file.
+//
+// The purpose of this representation is to enable new methods of game analysis
+// and visualization, without requiring the consuming code to re-implement game logic.
+// This means that while this is reasonably compact, it contains lots of redudant
+// data stored on each frame (e.g. damage, number of jumps).
+message Event {
+  oneof event_type {
+    GameStart game_start = 1;
+    FrameStart frame_start = 2;
+    GameEnd game_end = 3;
+    PlayerUpdate player_update = 4;
+    ProjectileUpdate projectile_update = 5;
+  }
+}
+
+enum Stage {
+  STAGE_UNSPECIFIED = 0;
+
+  // Selectable stages:
+  STAGE_PEACHS_CASTLE = 1;
+  STAGE_CONGO_JUNGLE = 2;
+  STAGE_HYRULE_CASTLE = 3;
+  STAGE_PLANET_ZEBES = 4;
+  STAGE_YOSHIS_ISLAND = 5;
+  STAGE_DREAM_LAND = 6;
+  STAGE_SECTOR_Z = 7;
+  STAGE_SAFFRON_CITY = 8;
+  STAGE_MUSHROOM_KINGDOM = 9;
+
+  // Stages in 1P mode:
+  STAGE_DUEL_ZONE = 10;
+  STAGE_FINAL_DESTINATION = 11;
+  STAGE_META_CRYSTAL = 12;
+}
+
+enum Player {
+  PLAYER_UNSPECIFIED = 0;
+  PLAYER_ONE = 1;
+  PLAYER_TWO = 2;
+  PLAYER_THREE = 3;
+  PLAYER_FOUR = 4;
+}
+
+message FrameStart {
+  // 0-based frame number.
+  uint32 frame_number = 0;
+}
+
+message GameStart {
+  google.protobuf.Timestamp start_time = 1;
+
+  Stage stage = 2;
+}
+
+message GameEnd {
+  google.protobuf.Timestamp end_time = 1;
+
+}
+
+message PlayerUpdate {
+  Player player = 1;
+  
+  float x_position = 2;
+  float y_position = 3;
+  float z_position = 4;
+
+  float x_velocity = 5;
+  float y_velocity = 6;
+
+  int32 number_of_jumps = 7;
+
+  // Facing direction?
+
+  // joystick, buttons, damage, 
+}
+
+message ProjectileUpdate {
+
+}
